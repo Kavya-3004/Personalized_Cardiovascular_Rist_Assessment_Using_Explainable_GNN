@@ -1,0 +1,31 @@
+file_path,filename,category,md5_hash,file_size_bytes,split
+data/raw/ECG/MI(5).jpg,MI(5).jpg,ECG,d35ee6873ebdac348484e46fe50883ed,692395,train
+data/raw/ECG/MI(3).jpg,MI(3).jpg,ECG,229034a13adffabeef6e8b2a461ad3b5,695606,train
+data/raw/ECG/MI(4).jpg,MI(4).jpg,ECG,bfaf8e018863a8ef037b163615c2d80a,693441,train
+data/raw/ECG/MI(2).jpg,MI(2).jpg,ECG,f9771d2375d11303ce5865ccac1dde6d,314911,val
+data/raw/ECG/MI(1).jpg,MI(1).jpg,ECG,bfec4d7750785b6eabd82d73409c4653,703026,test
+data/raw/abnormal_heatbeat/HB(5).jpg,HB(5).jpg,abnormal_heatbeat,1f7278984f1fd43150556a939743d4d6,705275,train
+data/raw/abnormal_heatbeat/HB(3).jpg,HB(3).jpg,abnormal_heatbeat,943a7a129850c964554293d6686edfec,708245,train
+data/raw/abnormal_heatbeat/HB(4).jpg,HB(4).jpg,abnormal_heatbeat,305d87fcb0ef304a3d1a6f8626d94e23,706264,train
+data/raw/abnormal_heatbeat/HB(2).jpg,HB(2).jpg,abnormal_heatbeat,5ecb82bb6d179cd596a84f2a2396d77e,701883,val
+data/raw/abnormal_heatbeat/HB(1).jpg,HB(1).jpg,abnormal_heatbeat,fbf555b1b6f8a4e08cf00e1ab6df6f6b,707386,test
+data/raw/his_MI/PMI(5).jpg,PMI(5).jpg,his_MI,84f59bba9d96740b790f8dc944e660e4,697969,train
+data/raw/his_MI/PMI(3).jpg,PMI(3).jpg,his_MI,dac1c027f8e20fbbb15ac4e82c3d14d9,696490,train
+data/raw/his_MI/PMI(4).jpg,PMI(4).jpg,his_MI,7779d91a83538b207c45e6a0e99c0666,701906,train
+data/raw/his_MI/PMI(2).jpg,PMI(2).jpg,his_MI,4fd91427eb1b06d6b990d4387734f04a,697885,val
+data/raw/his_MI/PMI(1).jpg,PMI(1).jpg,his_MI,b4942c527555887af1cb436482cfcb01,697837,test
+data/raw/normal/Normal(5).jpg,Normal(5).jpg,normal,034d8e4892602f424bd3fac91369e6cd,700697,train
+data/raw/normal/Normal(3).jpg,Normal(3).jpg,normal,c97addb2965ced2d3e25a46f6eeb4a8e,697606,train
+data/raw/normal/Normal(4).jpg,Normal(4).jpg,normal,22ac9357cb45f693e6118fa1a85d03c4,695585,train
+data/raw/normal/Normal(2).jpg,Normal(2).jpg,normal,04f3cc318540628330dc3d0c09cf2cf6,694673,val
+data/raw/normal/Normal(1).jpg,Normal(1).jpg,normal,3a66b546fbcfc121be7453ea358eff60,700055,test
+data/raw/uci - normal/img0005-37.2656.jpg,img0005-37.2656.jpg,uci - normal,fe62390343b06899133455b86fde035a,23296,train
+data/raw/uci - normal/img0003-15.9856.jpg,img0003-15.9856.jpg,uci - normal,52fe74659fd5f0f4287a57646507fad4,23989,train
+data/raw/uci - normal/img0004-26.6256.jpg,img0004-26.6256.jpg,uci - normal,64f26cee37ca0975af6b95aa45e921a9,24102,train
+data/raw/uci - normal/img0002-5.34557.jpg,img0002-5.34557.jpg,uci - normal,8f1b53db7df5ef77e7940b0cb85270ee,21292,val
+data/raw/uci - normal/img0001--5.29443.jpg,img0001--5.29443.jpg,uci - normal,fc3a7ff98a45b1bee477f3a7917fd06c,21925,test
+data/raw/uci - sick/IM00005.jpg,IM00005.jpg,uci - sick,1a94dc73f3eee53df5226b1aa7bffb73,25113,train
+data/raw/uci - sick/IM00003.jpg,IM00003.jpg,uci - sick,45a64da696d904be11667ed9be533ec1,25573,train
+data/raw/uci - sick/IM00004.jpg,IM00004.jpg,uci - sick,bcbac5e10ff03ae71e876ef98e3cfd16,24953,train
+data/raw/uci - sick/IM00002.jpg,IM00002.jpg,uci - sick,2243689195c8b165cabea58a903f69c6,25733,val
+data/raw/uci - sick/IM00001.jpg,IM00001.jpg,uci - sick,83464b636f43b4a099742a4225122e6f,26736,test

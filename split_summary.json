@@ -1,0 +1,108 @@
+{
+    "dataset_name": "UCI Cleveland Heart Disease",
+    "random_state": 42,
+    "deduplication": {
+        "initial_rows": 303,
+        "exact_duplicates": 0,
+        "feature_duplicates": 0,
+        "removed_rows": 0,
+        "final_rows": 303
+    },
+    "imputation_parameters": {
+        "ca": 0.0,
+        "thal": 3.0
+    },
+    "split_counts": {
+        "train": 212,
+        "val": 45,
+        "test": 46,
+        "total": 303
+    },
+    "split_ratios": {
+        "train": 0.6997,
+        "val": 0.1485,
+        "test": 0.1518
+    },
+    "target_binary_distribution": {
+        "train": {
+            "0": 115,
+            "1": 97
+        },
+        "val": {
+            "0": 24,
+            "1": 21
+        },
+        "test": {
+            "0": 25,
+            "1": 21
+        }
+    },
+    "target_multiclass_distribution": {
+        "train": {
+            "0": 115,
+            "1": 40,
+            "2": 25,
+            "3": 22,
+            "4": 10
+        },
+        "val": {
+            "0": 24,
+            "1": 8,
+            "3": 6,
+            "2": 5,
+            "4": 2
+        },
+        "test": {
+            "0": 25,
+            "1": 7,
+            "3": 7,
+            "2": 6,
+            "4": 1
+        }
+    },
+    "features": {
+        "all_features": [
+            "age",
+            "sex",
+            "cp",
+            "trestbps",
+            "chol",
+            "fbs",
+            "restecg",
+            "thalach",
+            "exang",
+            "oldpeak",
+            "slope",
+            "ca",
+            "thal"
+        ],
+        "continuous": [
+            "age",
+            "trestbps",
+            "chol",
+            "thalach",
+            "oldpeak"
+        ],
+        "categorical": [
+            "sex",
+            "cp",
+            "fbs",
+            "restecg",
+            "exang",
+            "slope",
+            "ca",
+            "thal"
+        ]
+    },
+    "files_generated": [
+        "data/processed/train.csv",
+        "data/processed/val.csv",
+        "data/processed/test.csv",
+        "data/processed/train_scaled.csv",
+        "data/processed/val_scaled.csv",
+        "data/processed/test_scaled.csv",
+        "data/processed/full_preprocessed.csv",
+        "data/processed/image_manifest_splits.csv",
+        "models/scaler.pkl"
+    ]
+}
