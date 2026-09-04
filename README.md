@@ -1,8 +1,10 @@
-# Personalized Cardiovascular Risk Assessment Using Explainable Graph Neural Networks
+# Personalized Cardiovascular Risk Assessment
 
 ## 📖 Project Overview
 
-This repository hosts a multi-modal cardiovascular risk assessment framework that combines clinical tabular health metrics with diagnostic electrocardiogram (ECG) imagery. The system leverages **Graph Neural Networks (GNNs)**, **XGBoost**, and **Explainable AI (SHAP / GNNExplainer)** to deliver accurate, personalized, and interpretable cardiac risk predictions.
+This repository hosts a machine learning framework for personalized cardiovascular risk assessment using clinical tabular health metrics and explainable artificial intelligence. The deployed system leverages an ensemble **Random Forest Classifier** and **Explainable AI (TreeSHAP)** to deliver accurate, personalized, and interpretable cardiac risk predictions.
+
+During the baseline benchmarking phase, three algorithms were rigorously evaluated: **Logistic Regression**, **Random Forest**, and **XGBoost**. The **Random Forest** model was selected as champion based on superior clinical **Recall (90.48% on the hold-out test set)** and **ROC-AUC (0.9362)**, ensuring minimal false-negative risk. The complete inference pipeline is deployed via an interactive **Streamlit** application.
 
 ---
 
@@ -11,27 +13,22 @@ This repository hosts a multi-modal cardiovascular risk assessment framework tha
 ### 1. UCI Heart Disease Dataset
 * **Source**: [UCI Machine Learning Repository - Heart Disease Dataset](https://archive.ics.uci.edu/dataset/45/heart+disease)
 * **Mirror / Alternative**: [Kaggle UCI Heart Disease Dataset](https://www.kaggle.com/datasets/redwankarimsony/heart-disease-data)
-* **Description**: Contains clinical patient records from four databases (Cleveland, Hungary, Switzerland, and Long Beach V.A.) with 14 key diagnostic features.
+* **Description**: Contains clinical patient records from the Cleveland database with 13 key diagnostic features and binary cardiovascular status.
 
-### 2. ECG Images Dataset of Cardiac Patients
+### 2. Diagnostic ECG Repository (Raw Multi-Modal Data)
 * **Primary Source (Mendeley Data)**: [ECG Images Dataset of Cardiac Patients (DOI: 10.17632/gwbz3fsgp8.2)](https://data.mendeley.com/datasets/gwbz3fsgp8/2)
-* **Kaggle Mirror**: [Kaggle ECG Image Dataset](https://www.kaggle.com/datasets/evilvirus7/ecg-image-dataset)
-* **Alternative ECG Repository**: [Kaggle ECG Heartbeat Categorization Dataset](https://www.kaggle.com/datasets/shayanfazeli/heartbeat)
-* **Description**: High-resolution 12-lead ECG image recordings categorized into diagnostic classes including Myocardial Infarction, Previous History of MI, Abnormal Heartbeat, and Normal controls.
-
-### 3. Comprehensive Heart Disease Indicators (Kaggle)
-* **Source**: [Kaggle Heart Disease Health Indicators](https://www.kaggle.com/datasets/alexteboul/heart-disease-health-indicators)
-* **Source**: [Kaggle Heart Disease Dataset](https://www.kaggle.com/datasets/johnsmith82/heart-disease-dataset)
+* **Description**: Collected for multi-modal exploratory research across diagnostic classes (Myocardial Infarction, Abnormal Heartbeat, Normal controls). *Note: The active deployed risk prediction pipeline utilizes the 13 verified clinical tabular metrics.*
 
 ---
 
 ## 📁 Raw Dataset Structure (`data/raw/`)
 
-All raw datasets and diagnostic images are organized within the [`data/raw`](../data/raw) directory:
+All raw datasets and diagnostic images are organized within the `data/raw` directory:
 
 ```text
 data/
 └── raw/
+    ├── UCI_Heart_Disease.csv # Canonical UCI Cleveland tabular dataset
     ├── ECG/                  # Myocardial Infarction (MI) 12-lead ECG images
     ├── abnormal_heatbeat/    # Abnormal Heartbeat ECG images
     ├── his_MI/               # Previous History of Myocardial Infarction (PMI) ECG images
@@ -40,19 +37,11 @@ data/
     └── uci - sick/           # UCI Heart Disease - Diagnosed disease patient profile samples
 ```
 
-### Direct Links to Local Subdirectories:
-* [📂 `data/raw/ECG`](../data/raw/ECG): Contains ECG images labeled for acute Myocardial Infarction (`MI(1).jpg`, `MI(2).jpg`, ...).
-* [📂 `data/raw/abnormal_heatbeat`](../data/raw/abnormal_heatbeat): Contains ECG images demonstrating arrhythmias and abnormal heartbeats (`HB(1).jpg`, `HB(2).jpg`, ...).
-* [📂 `data/raw/his_MI`](../data/raw/his_MI): Contains ECG images demonstrating previous history of MI (`PMI(1).jpg`, `PMI(2).jpg`, ...).
-* [📂 `data/raw/normal`](../data/raw/normal): Contains baseline normal healthy ECG recordings (`Normal(1).jpg`, `Normal(2).jpg`, ...).
-* [📂 `data/raw/uci - normal`](../data/raw/uci%20-%20normal): Tabular/visual profile representations for non-disease cases (`img0001--5.29443.jpg`, ...).
-* [📂 `data/raw/uci - sick`](../data/raw/uci%20-%20sick): Tabular/visual profile representations for positive heart disease cases (`IM00001.jpg`, ...).
-
 ---
 
 ## 📊 Tabular Clinical Features Specification
 
-The clinical attributes present in the UCI / Cleveland Heart Disease data:
+The 13 clinical attributes used for model training and real-time inference:
 
 | # | Feature | Description | Values / Units |
 |---|---------|-------------|----------------|
@@ -65,60 +54,83 @@ The clinical attributes present in the UCI / Cleveland Heart Disease data:
 | 7 | `restecg` | Resting electrocardiographic results | `0`: Normal, `1`: ST-T wave abnormality, `2`: Left ventricular hypertrophy |
 | 8 | `thalach` | Maximum heart rate achieved | Continuous (bpm) |
 | 9 | `exang` | Exercise-induced angina | `1` = Yes, `0` = No |
-| 10 | `oldpeak` | ST depression induced by exercise relative to rest | Continuous |
+| 10 | `oldpeak` | ST depression induced by exercise relative to rest | Continuous (0.0 to 6.2) |
 | 11 | `slope` | Slope of peak exercise ST segment | `1`: Upsloping, `2`: Flat, `3`: Downsloping |
 | 12 | `ca` | Major vessels colored by fluoroscopy | `0` to `3` |
-| 13 | `thal` | Thalassemia | `3` = Normal, `6` = Fixed defect, `7` = Reversible defect |
-| 14 | `target` | Diagnosis of heart disease | `0`: No disease (< 50% diameter narrowing), `1-4`: Disease (> 50% narrowing) |
+| 13 | `thal` | Thalassemia status | `3` = Normal, `6` = Fixed defect, `7` = Reversible defect |
+
+**Target Variable**: `target_binary` (`0`: No heart disease, `1`: Heart disease present).
 
 ---
 
-## 🚀 Project Pipeline
+## 🚀 Machine Learning & Inference Pipeline
 
 ```text
-Dataset Collection (Tabular + ECG Images)
+Dataset Collection (UCI Cleveland Heart Disease Dataset)
       │
       ▼
-Data Preprocessing & Missing Value Imputation
+Data Preprocessing, Deduplication & Mode Imputation (ca: 0.0, thal: 3.0)
       │
       ▼
-Patient Graph Construction (k-NN / Clinical Similarity)
+Stratified Train / Validation / Test Splitting (70% / 15% / 15%)
       │
       ▼
-Graph Neural Network Modeling (GCN / GAT / GraphSAGE)
+Baseline Model Benchmarking (Logistic Regression, Random Forest, XGBoost)
       │
       ▼
-Baseline ML Benchmark (XGBoost, Random Forest)
+Champion Selection: Random Forest (Top Validation Recall & ROC-AUC)
       │
       ▼
-Model Interpretability (SHAP & GNNExplainer)
+Hold-Out Test Evaluation (Accuracy: 86.96%, Recall: 90.48%, ROC-AUC: 0.9362)
       │
       ▼
-Clinical Evaluation & Risk Assessment
+Model Explainability (TreeSHAP Individual Patient Feature Attribution)
+      │
+      ▼
+Interactive Streamlit Application (Presentation Bands: LOW / MEDIUM / HIGH)
 ```
 
 ---
 
-## 🛠️ GitHub Dataset Upload & Git LFS Guide
+## 📈 Model Performance & Evaluation Metrics
 
-When pushing datasets containing images or large `.csv` files to GitHub:
+Evaluated on the stratified partitions (`random_state=42`):
 
-1. **Install Git LFS** (if not already installed):
-   ```bash
-   git lfs install
-   ```
+### 1. Validation Set Benchmarking (45 Patients)
+| Model | Accuracy | Precision | Recall (Sensitivity) | F1-Score | ROC-AUC |
+|---|---|---|---|---|---|
+| **Random Forest (Champion)** | **84.44%** | **85.00%** | **80.95%** | **82.93%** | **0.9256** |
+| Logistic Regression | 80.00% | 83.33% | 71.43% | 76.92% | 0.8889 |
+| XGBoost | 77.78% | 78.95% | 71.43% | 75.00% | 0.8948 |
 
-2. **Track image and data formats**:
-   ```bash
-   git lfs track "*.jpg"
-   git lfs track "*.png"
-   git lfs track "*.csv"
-   ```
+### 2. Final Hold-Out Test Set Performance (46 Patients, Random Forest)
+* **Accuracy**: **86.96%** (40 / 46 correct classifications)
+* **Recall (Sensitivity)**: **90.48%** (19 of 21 cardiac disease cases detected; **only 2 false negatives**)
+* **Precision**: **82.61%**
+* **F1-Score**: **86.36%**
+* **ROC-AUC**: **0.9362**
 
-3. **Stage and commit**:
-   ```bash
-   git add .gitattributes
-   git add data/
-   git commit -m "Add raw datasets and ECG images"
-   git push origin main
-   ```
+---
+
+## 🔍 Explainability (TreeSHAP)
+
+For every individual patient prediction, local feature attributions are computed via TreeSHAP:
+$$f(x) = \mathbb{E}[f(x)] + \sum_{j=1}^{13} \phi_j$$
+* **Positive Contribution ($\phi_j > 0$)**: Feature pushed model prediction toward higher disease probability (`increases risk`).
+* **Negative Contribution ($\phi_j < 0$)**: Feature pushed model prediction toward lower disease probability (`decreases risk`).
+* *Note: SHAP values describe statistical model contributions and do not represent biological or clinical causation.*
+
+---
+
+## 💻 Running the Streamlit Application
+
+```bash
+streamlit run app.py
+```
+Access the application locally at `http://localhost:8501`.
+
+---
+
+## ⚠️ Important Educational & Research Disclaimer
+
+This application and codebase are developed for **educational, academic, and research demonstration purposes only**. The risk scores are generated by a machine learning model and do **not** constitute a clinical diagnosis, medical evaluation, treatment plan, or medication prescription. The **LOW / MEDIUM / HIGH** risk categories are project-defined presentation-layer bands and are **not** clinically validated diagnostic thresholds. Always consult a qualified medical professional for health evaluations.
